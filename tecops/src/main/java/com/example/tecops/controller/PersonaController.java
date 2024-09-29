@@ -18,6 +18,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.example.tecops.model.Persona;
 import com.example.tecops.service.IPersonaService;
+
 @RestController
 @RequestMapping("/personas")
 public class PersonaController {
@@ -25,39 +26,46 @@ public class PersonaController {
     private IPersonaService service;
 
     @GetMapping
-    public ResponseEntity<List<Persona>> listar(){
+    public ResponseEntity<List<Persona>> listar() {
         List<Persona> obj = service.listar();
-        return new ResponseEntity<List<Persona>> (obj,HttpStatus.OK);
+        return new ResponseEntity<List<Persona>>(obj, HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<Void> registrar(@RequestBody Persona persona){
+    public ResponseEntity<Void> registrar(@RequestBody Persona persona) {
+        // Asegúrate de que 'persona' tenga un 'pais' válido
+        if (persona.getPais() == null || persona.getPais().getIdPais() == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
         Persona obj = service.registrar(persona);
-        URI uri= ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getIdPersona()).toUri();
-        return  ResponseEntity.created(uri).build();
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getIdPersona())
+                .toUri();
+        return ResponseEntity.created(uri).build();
     }
+
     @PutMapping
-    public ResponseEntity<Persona> actualizar(@RequestBody Persona persona){
-        Persona obj =service.actualizar(persona);
-        return new ResponseEntity<Persona> (obj,HttpStatus.OK);
+    public ResponseEntity<Persona> actualizar(@RequestBody Persona persona) {
+        Persona obj = service.actualizar(persona);
+        return new ResponseEntity<Persona>(obj, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void>eliminar(@PathVariable ("id")Integer id) throws Exception{
-        Persona obj =service.ListarPorId(id);
-        if(obj == null){
+    public ResponseEntity<Void> eliminar(@PathVariable("id") Integer id) throws Exception {
+        Persona obj = service.ListarPorId(id);
+        if (obj == null) {
             throw new Exception("No se encontro ID");
         }
         service.eliminar(id);
         return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
     }
+
     @GetMapping("/{id}")
-    public ResponseEntity<Persona> listarPorId(@PathVariable ("id") Integer codigo) throws Exception{
+    public ResponseEntity<Persona> listarPorId(@PathVariable("id") Integer codigo) throws Exception {
         Persona obj = service.ListarPorId(codigo);
-        if(obj == null){
+        if (obj == null) {
             throw new Exception("No se encontro ID");
         }
-        return new ResponseEntity<Persona>(obj,HttpStatus.OK);
+        return new ResponseEntity<Persona>(obj, HttpStatus.OK);
 
     }
 }

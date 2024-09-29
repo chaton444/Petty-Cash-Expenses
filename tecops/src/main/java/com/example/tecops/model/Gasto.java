@@ -27,9 +27,6 @@ public class Gasto {
     @JoinColumn(name = "idCategoria")
     private Categoria categoria;
 
-
-
-
     public Integer getIdGasto() {
         return this.idGasto;
     }

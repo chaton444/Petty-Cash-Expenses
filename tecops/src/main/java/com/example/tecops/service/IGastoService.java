@@ -1,6 +1,8 @@
 package com.example.tecops.service;
 
 import java.util.List;
+
+
 import com.example.tecops.model.Gasto;
 
 public interface IGastoService {

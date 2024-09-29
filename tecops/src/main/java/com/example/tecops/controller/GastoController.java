@@ -37,6 +37,7 @@ public class GastoController {
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getIdGasto()).toUri();
         return ResponseEntity.created(uri).build();
     }
+    
 
     @PutMapping
     public ResponseEntity<Gasto> actualizar(@RequestBody Gasto gasto) {

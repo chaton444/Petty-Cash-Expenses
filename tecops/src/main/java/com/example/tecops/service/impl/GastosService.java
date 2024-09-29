@@ -39,5 +39,6 @@ public class GastosService implements IGastoService {
     public Gasto ListarPorId(Integer codigo) {
         return repo.findById(codigo).orElse(null);
     }
+    
 }
 
